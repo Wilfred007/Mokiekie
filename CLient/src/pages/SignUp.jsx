@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import OAuth from '../components/OAuth';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({})
@@ -60,6 +61,7 @@ const SignUp = () => {
         <input type='email' placeholder='Email' className='border-none bg-white p-3 rounded-lg focus:outline-none' id='email'onChange={handleChange} />
         <input type='password' placeholder='Password' className='border-none bg-white focus:outline-none p-3 rounded-lg' id='password'onChange={handleChange} />
         <button disabled={loading}  className='bg-blue-600 text-white p-4 rounded-xl cursor-pointer hover:bg-blue-800 disabled:opacity-85'>{loading ? 'Loading...': 'Sign Up'}</button>
+        <OAuth/>
       </form>
       <div className='flex gap-2 justify-center'>
         <h1>Have an account?</h1>
