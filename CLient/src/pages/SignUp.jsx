@@ -37,6 +37,7 @@ const SignUp = () => {
       if(!res.ok){
         setError(data.message || 'Something went wrong');
         setLoading(false);
+        // setError(data.message);
         return;
       }
       setLoading(false)
