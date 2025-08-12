@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { useRef } from 'react'
 import { 
@@ -8,7 +9,10 @@ import {
   updateUserAvatar, 
   deleteUserFailure,
   deleteUserStart,
-  deleteUserSuccess
+  deleteUserSuccess,
+  signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess
 } from '../redux/user/userSlice'
 
 const Profile = () => {
@@ -31,6 +35,27 @@ const Profile = () => {
       handleFileUpload(file);
     }
   }, [file])
+
+  const handleLogOut = async() => {
+    try {
+      dispatch(signOutUserStart())
+      const res = await fetch('/Api/auth/signout');
+      const data = await res.json();
+      if(data.success == false) {
+        dispatch(deleteUserFailure(data.message))
+        return;
+      }
+
+       // Clear Redux user state
+    dispatch(signOutUserSuccess());
+
+    // Redirect to login page
+    navigate('/login');
+    } catch (error) {
+      dispatch(deleteUserFailure(data.message))
+    }
+
+  }
 
   const handleDeleteUser = async() => {
     try {
@@ -271,7 +296,7 @@ const Profile = () => {
 
       <div className='flex justify-between mt-5'>
         <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer hover:text-red-900 transition-colors'>Delete Account</span>
-        <span className='text-gray-800 font-semibold cursor-pointer hover:text-gray-900 transition-colors'>Sign Out</span>
+        <span onClick={handleLogOut} className='text-gray-800 font-semibold cursor-pointer hover:text-gray-900 transition-colors'>Sign Out</span>
       </div>
     </div>
   )
