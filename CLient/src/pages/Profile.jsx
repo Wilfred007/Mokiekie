@@ -5,7 +5,10 @@ import {
   updateUserStart, 
   updateUserSuccess, 
   updateUserFailure,
-  updateUserAvatar 
+  updateUserAvatar, 
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess
 } from '../redux/user/userSlice'
 
 const Profile = () => {
@@ -28,6 +31,27 @@ const Profile = () => {
       handleFileUpload(file);
     }
   }, [file])
+
+  const handleDeleteUser = async() => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/Api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+
+      });
+
+      const data = await res.json();
+      if (data.success == false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data))
+      
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+      
+    }
+  }
 
   const handleFileUpload = async (file) => {
     try {
@@ -246,7 +270,7 @@ const Profile = () => {
       )}
 
       <div className='flex justify-between mt-5'>
-        <span className='text-red-800 cursor-pointer hover:text-red-900 transition-colors'>Delete Account</span>
+        <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer hover:text-red-900 transition-colors'>Delete Account</span>
         <span className='text-gray-800 font-semibold cursor-pointer hover:text-gray-900 transition-colors'>Sign Out</span>
       </div>
     </div>
