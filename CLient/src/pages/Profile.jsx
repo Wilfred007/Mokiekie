@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { useRef } from 'react'
 import { 
@@ -276,12 +276,12 @@ const Profile = () => {
           {loading ? 'loading...' : 'Update'}
         </button>
         
-        <button 
+        <Link to={'/create-listing'} 
           type='button'
-          className='bg-green-600 text-white p-4 rounded-xl cursor-pointer hover:bg-green-800 disabled:opacity-85 transition-colors'
+          className='bg-green-600 text-white p-4 rounded-xl cursor-pointer hover:bg-green-800 text-center disabled:opacity-85 transition-colors'
         >
           Create Listing
-        </button>
+        </Link>
       </form>
 
       {/* Success Message */}

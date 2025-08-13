@@ -83,3 +83,4 @@ router.post("/update/:id", verifyToken, async (req, res) => {
 
 router.delete('/delete/:id', verifyToken, deleteUser);
 export default router;
+

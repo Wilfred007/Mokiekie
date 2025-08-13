@@ -4,6 +4,7 @@ import dotenv from'dotenv';
 import userRouter from './routes/user.routes.js'
 import authRouter from './routes/auth.route.js'
 import uploadRouter from './routes/upload.route.js'
+import listingRouter from './routes/listing.route.js'
 import cookieParser from 'cookie-parser';
 
 
@@ -37,7 +38,9 @@ app.listen(3000, () => {
 
 app.use('/Api/user', userRouter);
 app.use('/Api/auth', authRouter);
-app.use('/Api', uploadRouter);  
+app.use('/Api', uploadRouter); 
+app.use('/Api/listing', listingRouter);  
+
 
 //create middleware to handle errors
 app.use((err, req, res, next) => {
