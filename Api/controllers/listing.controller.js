@@ -22,3 +22,7 @@ export const createListing = async (req, res, next) => {
         next(error);
     }
 };
+
+// export const updateListing = async (req, res, next) => {
+
+// }

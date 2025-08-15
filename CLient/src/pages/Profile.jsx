@@ -14,6 +14,7 @@ import {
   signOutUserFailure,
   signOutUserSuccess
 } from '../redux/user/userSlice'
+import listing from '../../../Api/models/listing.model';
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user)
@@ -25,6 +26,8 @@ const Profile = () => {
   const [formData, setFormData] = useState({})
   const [updateSuccess, setUpdateSuccess] = useState(false)
   const [updateError, setUpdateError] = useState(false)
+  const [showListingsError, setShowListingsError] = useState(false)
+  const [userListings, setUserListings] = useState([])
 
   console.log(file)
   console.log(fileUploadProgress)
@@ -57,6 +60,47 @@ const Profile = () => {
 
   }
 
+  const handleDeleteListing = async (listingId) => {
+    try {
+      const res = await fetch(`/Api/listing/delete/${listingId}`, {
+        method: 'DELETE',
+
+      });
+      const data = await res.json();
+      if(data.success == false) {
+        console.log(data.message);
+        return
+      }
+      setUserListings((prev) => prev.filter((listing) => listing._id != listingId))
+    } catch (error) {
+      
+    }
+  }
+
+
+  const handleShowListings = async () => {
+    try {
+      setShowListingsError(false);
+  
+      const res = await fetch(`/Api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+  
+      if (data.success === false) {
+        setShowListingsError(data.message || 'Failed to fetch listings');
+        return;
+      }
+  
+      console.log('User Listings:', data);
+      // setListings(data); // example if you want to store it in state
+      setUserListings(data)
+  
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      setShowListingsError(true);
+    }
+  };
+    
+
   const handleDeleteUser = async() => {
     try {
       dispatch(deleteUserStart());
@@ -64,6 +108,7 @@ const Profile = () => {
         method: 'DELETE',
 
       });
+
 
       const data = await res.json();
       if (data.success == false) {
@@ -293,6 +338,42 @@ const Profile = () => {
       {updateError && (
         <p className='text-red-700 mt-5 text-center font-medium'>{updateError}</p>
       )}
+
+      <button onClick={handleShowListings} className='text-gray-700 text-xl font-semibold p-10'>Show Listings</button>
+      <p>{showListingsError ? 'Error SHowing Listing': ''}</p>
+      <div>
+  {userListings && userListings.length > 0 && (
+    <div>
+        <h1 className="text-center text-2xl font-bold text-gray-700">Your Listings</h1>
+      {userListings.map((listing) => (
+        <div
+          key={listing._id}
+          className="rounded-lg border border-gray-200 p-3 flex justify-between items-center gap-4 my-4"
+        >
+          <Link to={`/listing/${listing._id}`}>
+            <img
+              src={listing.imageUrls[0]}
+              alt="listing cover"
+              className="h-15 w-15 object-contain rounded-lg"
+            />
+          </Link>
+          <Link
+            className="text-lg font-semibold text-gray-700 truncate"
+            to={`/listing/${listing._id}`}
+          >
+            <h2>{listing.name}</h2>
+          </Link>
+          <div className="space-x-3">
+            <button onClick={() =>handleDeleteListing(listing._id)} className="text-red-800">Delete</button>
+            <Link to={`/update-listing/${listing._id}`}>
+            <button className="text-blue-900">Edit</button>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
       <div className='flex justify-between mt-5'>
         <span onClick={handleDeleteUser} className='text-red-800 cursor-pointer hover:text-red-900 transition-colors'>Delete Account</span>

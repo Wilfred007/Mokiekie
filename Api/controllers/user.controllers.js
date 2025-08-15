@@ -1,3 +1,4 @@
+import listing from "../models/listing.model.js";
 import User from "../models/user.model.js";
 import { errorHandler} from '../utils/error.js'
 
@@ -21,4 +22,13 @@ export const deleteUser = async (req, res, next) => {
         next(error);
     }
 };
+export const getUserListings = async (req, res, next) => {
+    try {
+        const listings = await listing.find({ userRef: String(req.user.id) });
+        res.status(200).json(listings);
+    } catch (error) {
+        next(error);
+    }
+};
+
 

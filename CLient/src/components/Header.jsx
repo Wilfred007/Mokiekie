@@ -10,8 +10,13 @@ const Header = () => {
         <div className='flex justify-between items-center max-w-6xl mx-auto p-5'>
             <Link to='/'>
         <div>
-        <span className='font-bold text-2xl text-slate-700'>Mokiekie</span>
-        <span className='font-bold text-xl text-slate-500'>Estate</span>
+        {/* <span className='font-bold text-2xl text-slate-700'>Mokiekie</span> */}
+        {/* <span className='font-bold text-xl text-slate-500'>Estate</span> */}
+        <img 
+  src="/mok.jpg" 
+  alt="" 
+  className="w-25 h-25 object-cover rounded-full" 
+/>
         </div>
         </Link> 
         <div>
