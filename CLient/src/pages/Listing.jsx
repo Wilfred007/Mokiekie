@@ -31,7 +31,7 @@ const Listing = () => {
         setLoading(true)
         setError(false)
 
-        const res = await fetch(`/Api/listing/get/${params.listingId}`)
+        const res = await fetch(`/Api/listing/${params.listingId}`)
         const data = await res.json()
 
         if (data.success === false) {

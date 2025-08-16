@@ -162,57 +162,109 @@
 //   }
 // })
 
-// router.get('/get', async(req, res, next) => {
+// // router.get('/get', async (req, res, next) => {
+// //   try {
+// //     const limit = parseInt(req.query.limit) || 9;
+// //     const startIndex = parseInt(req.query.startIndex) || 0;
+
+// //     // Boolean filters
+// //     let offer = req.query.offer;
+// //     if (offer === undefined || offer === 'false') {
+// //       offer = { $ne: false }; // exclude only false
+// //     } else {
+// //       offer = true; // filter for true
+// //     }
+
+// //     let furnished = req.query.furnished;
+// //     if (furnished === undefined || furnished === 'false') {
+// //       furnished = { $ne: false };
+// //     } else {
+// //       furnished = true;
+// //     }
+
+// //     let parking = req.query.parking;
+// //     if (parking === undefined || parking === 'false') {
+// //       parking = { $ne: false };
+// //     } else {
+// //       parking = true;
+// //     }
+
+// //     // Type filter (sale, rent, all)
+// //     let type = req.query.type;
+// //     if (type === undefined || type === 'all') {
+// //       type = { $in: ['sale', 'rent'] }; // allow both
+// //     }
+
+// //     // Search & sort
+// //     const searchTerm = req.query.searchTerm || '';
+// //     const sortField = req.query.sort || 'createdAt';
+// //     const order = req.query.order === 'asc' ? 1 : -1;
+
+// //     const listings = await Listing.find({
+// //       name: { $regex: searchTerm, $options: 'i' },
+// //       offer,
+// //       furnished,
+// //       parking,
+// //       type,
+// //     })
+// //       .sort({ [sortField]: order })
+// //       .limit(limit)
+// //       .skip(startIndex);
+
+// //     return res.status(200).json(listings);
+// //   } catch (error) {
+// //     next(error);
+// //   }
+// // });
+
+// router.get('/get', async (req, res, next) => {
 //   try {
 //     const limit = parseInt(req.query.limit) || 9;
 //     const startIndex = parseInt(req.query.startIndex) || 0;
-//     let offer = req.query.offer;
 
-//     if(offer === undefined || offer === 'false') {
-//       offer = { $ne: [false, undefined]};
+//     // Build query filters
+//     const filters = {};
+
+//     // Boolean filters
+//     if (req.query.offer === 'true') filters.offer = true;
+//     if (req.query.offer === 'false') filters.offer = false;
+
+//     if (req.query.furnished === 'true') filters.furnished = true;
+//     if (req.query.furnished === 'false') filters.furnished = false;
+
+//     if (req.query.parking === 'true') filters.parking = true;
+//     if (req.query.parking === 'false') filters.parking = false;
+
+//     // Type filter
+//     if (req.query.type && req.query.type !== 'all') {
+//       filters.type = req.query.type; // either 'sale' or 'rent'
 //     }
 
-//     let furnished = req.query.furnished;
-//     if(furnished === undefined || furnished === 'false'){
-//       furnished = { $ne: [false, undefined]};
+//     // Search term
+//     if (req.query.searchTerm) {
+//       filters.name = { $regex: req.query.searchTerm, $options: 'i' };
 //     }
 
+//     // Sorting
+//     const sortField = req.query.sort || 'createdAt';
+//     const order = req.query.order === 'asc' ? 1 : -1;
 
-//     let parking = req.query.parking;
-//     if(parking === undefined || parking === 'false') {
-//       parking = { $ne: [false, undefined]};
-//     }
+//     // Query DB
+//     const listings = await Listing.find(filters)
+//       .sort({ [sortField]: order })
+//       .limit(limit)
+//       .skip(startIndex);
 
-
-//     let type = req.query.type;
-//     if(type === undefined || type === 'all') {
-//       type = { $ne: ['sale', 'rent']}
-//     }
-
-
-
-//     const searchTerm = req.query.searchTerm || '';
-
-//     const sort = req.query.sort || 'createdAt';
-
-//     const order = req.query.order || 'desc';
-
-//     const listings = await Listing.find({
-//       name: { $regex: searchTerm, $options: 'i'}, 
-//       offer,
-//       furnished,
-//       parking,
-//       type,
-//     }).sort({[sort]: order}).limit(limit).skip(startIndex);
-
-//     return res.status(200).json(listings)
+//     return res.status(200).json(listings);
 //   } catch (error) {
-//     next(error)
+//     next(error);
 //   }
+// });
 
-// })
+
 
 // export default router; 
+
 
 import express from 'express';
 import jwt from 'jsonwebtoken';

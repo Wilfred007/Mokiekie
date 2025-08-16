@@ -203,7 +203,7 @@ const Create_Listing = () => {
                 // Reset form after a short delay
                 setTimeout(() => {
                     // Option 1: Navigate to the new listing
-                    // navigate(`/listing/${data._id}`);
+                    navigate(`/listing/${data._id}`);
                     
                     // Option 2: Navigate to profile or listings page
                     // navigate('/profile');
@@ -385,7 +385,7 @@ const Create_Listing = () => {
                                 type="number"
                                 id="regularPrice"
                                 min="50"
-                                max="10000000"
+                                max="500000000"
                                 required
                                 className="p-3 border border-gray-300 rounded-lg disabled:opacity-50"
                                 onChange={handleChange}
@@ -405,7 +405,7 @@ const Create_Listing = () => {
                                     type="number"
                                     id="discountedPrice"
                                     min="0"
-                                    max="10000000"
+                                    max="10000000000000"
                                     required
                                     className="p-3 border border-gray-300 rounded-lg disabled:opacity-50"
                                     onChange={handleChange}
