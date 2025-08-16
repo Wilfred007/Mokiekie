@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import { deleteUser, getUserListings, } from "../controllers/user.controllers.js";
+import { deleteUser, getUserListings, getUser } from "../controllers/user.controllers.js";
 
 const router = express.Router();
 router.use(cookieParser());
@@ -84,6 +84,8 @@ router.post("/update/:id", verifyToken, async (req, res) => {
 router.delete('/delete/:id', verifyToken, deleteUser);
 
 router.get('/listings/:id', verifyToken, getUserListings)
+
+router.get('/:id', verifyToken, getUser)
 
 // router.post('/update/:id', verifyToken, updateListing)
 export default router;
