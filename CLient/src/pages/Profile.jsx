@@ -321,12 +321,12 @@ const Profile = () => {
           {loading ? 'loading...' : 'Update'}
         </button>
         
-        <Link to={'/create-listing'} 
+        {/* <Link to={'/create-listing'} 
           type='button'
           className='bg-green-600 text-white p-4 rounded-xl cursor-pointer hover:bg-green-800 text-center disabled:opacity-85 transition-colors'
         >
           Create Listing
-        </Link>
+        </Link> */}
       </form>
 
       {/* Success Message */}
@@ -339,7 +339,7 @@ const Profile = () => {
         <p className='text-red-700 mt-5 text-center font-medium'>{updateError}</p>
       )}
 
-      <button onClick={handleShowListings} className='text-gray-700 text-xl font-semibold p-10'>Show Listings</button>
+      {/* <button onClick={handleShowListings} className='text-gray-700 text-xl font-semibold p-10'>Show Listings</button> */}
       <p>{showListingsError ? 'Error SHowing Listing': ''}</p>
       <div>
   {userListings && userListings.length > 0 && (

@@ -23,4 +23,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
 })

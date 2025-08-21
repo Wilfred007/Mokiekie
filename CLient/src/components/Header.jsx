@@ -1,142 +1,128 @@
-// import React, { useState } from 'react'
-// import { FaSearch } from 'react-icons/fa'
-// import { Link, Navigate, useNavigate } from 'react-router-dom'
-// import { useSelector } from 'react-redux'
-
-// const Header = () => {
-//     const { currentUser } = useSelector(state => state.user)
-//     const [searchTerm, setSearchTerm] = useState('');
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         const urlParams = new URLSearchParams(window.location.search);
-//         urlParams.set('searchTerm', searchTerm);
-//         const searchQuery = urlParams.toString();
-//         Navigate(`/search?${searchQuery}`);
-//     }
-//   return (
-//     <header className='bg-slate-200'>
-//         <div className='flex justify-between items-center max-w-6xl mx-auto p-5'>
-//             <Link to='/'>
-//         <div>
-//         {/* <span className='font-bold text-2xl text-slate-700'>Mokiekie</span> */}
-//         {/* <span className='font-bold text-xl text-slate-500'>Estate</span> */}
-//         <img 
-//   src="/mok.jpg" 
-//   alt="" 
-//   className="w-25 h-25 object-cover rounded-full" 
-// />
-//         </div>
-//         </Link> 
-//         <div>
-//             <form onSubmit={handleSubmit} className='bg-slate-100 p-2 rounded-lg flex items-center'>
-//             <input type='text' placeholder='Search...' className='bg-transparent focus:outline-none w-14 sm:w-64' value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}/>
-
-//             <button>
-//             <FaSearch className=' text-gray-500 w-2.5 sm:w-3.5'/>
-//             </button>
-//             </form>
-//         </div>
-//         <div>
-//             <ul className='flex gap-4'>
-//                 <Link to='/'>
-//                 <li className='hidden sm:inline text-slate-800 hover:underline cursor-pointer'>Home</li>
-//                 </Link>
-//                 <Link to='/About'>
-//                 <li className='hidden sm:inline text-slate-800 hover:underline cursor-pointer'>About</li>
-//                 </Link>
-//                 <Link to='/profile'>
-//                 {currentUser ? (
-//                     <img src={currentUser.avatar} alt='profile'  className='w-10 h-10 rounded-full object-cover'/>
-//                 ): (
-//                     <li className=' sm:inline text-slate-800 hover:underline cursor-pointer'>
-//                     {''}
-//                     Sign In</li>
-//                 )}
-                
-//                 </Link>
-
-//             </ul>
-//         </div>
-//         </div>
-//     </header>
-//   )
-// }
-
-// export default Header
-
-import React, { useEffect, useState } from 'react'
-import { FaSearch } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from "react"
+import { FaSearch, FaUser } from "react-icons/fa"
+import { Link, useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Header = () => {
-    const { currentUser } = useSelector(state => state.user)
-    const [searchTerm, setSearchTerm] = useState('');
-    const navigate = useNavigate(); // ✅ Hook for navigation
+  const { currentUser } = useSelector((state) => state.user)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isScrolled, setIsScrolled] = useState(false)
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('searchTerm', searchTerm);
-        const searchQuery = urlParams.toString();
-        navigate(`/search?${searchQuery}`); // ✅ Correct function call
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const urlParams = new URLSearchParams(window.location.search)
+    urlParams.set("searchTerm", searchTerm)
+    const searchQuery = urlParams.toString()
+    navigate(`/search?${searchQuery}`)
+  }
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const searchTermFromUrl = urlParams.get("searchTerm")
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl)
     }
+  }, [window.location.search])
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchTermFromUrl = urlParams.get('searchTerm');
-        if(searchTermFromUrl){
-            setSearchTerm(searchTermFromUrl);
-        }
-    }, [location.search])
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
-    return (
-        <header className='bg-slate-200'>
-            <div className='flex justify-between items-center max-w-6xl mx-auto p-5'>
-                <Link to='/'>
-                    <div>
-                        <img 
-                            src="/mok.jpg" 
-                            alt="" 
-                            className="w-25 h-25 object-cover rounded-full" 
-                        />
-                    </div>
-                </Link> 
-                <div>
-                    <form onSubmit={handleSubmit} className='bg-slate-100 p-2 rounded-lg flex items-center'>
-                        <input 
-                            type='text' 
-                            placeholder='Search...' 
-                            className='bg-transparent focus:outline-none w-14 sm:w-64' 
-                            value={searchTerm}  
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <button type="submit">
-                            <FaSearch className=' text-gray-500 w-2.5 sm:w-3.5'/>
-                        </button>
-                    </form>
-                </div>
-                <div>
-                    <ul className='flex gap-4'>
-                        <Link to='/'>
-                            <li className='hidden sm:inline text-slate-800 hover:underline cursor-pointer'>Home</li>
-                        </Link>
-                        <Link to='/About'>
-                            <li className='hidden sm:inline text-slate-800 hover:underline cursor-pointer'>About</li>
-                        </Link>
-                        <Link to='/profile'>
-                            {currentUser ? (
-                                <img src={currentUser.avatar} alt='profile' className='w-10 h-10 rounded-full object-cover'/>
-                            ) : (
-                                <li className=' sm:inline text-slate-800 hover:underline cursor-pointer'>Sign In</li>
-                            )}
-                        </Link>
-                    </ul>
-                </div>
+  return (
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-transparent backdrop-blur-md shadow-lg border-b border-gray-100"
+          : " shadow-sm"
+      }`}
+    >
+      <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-3 group">
+          <div className="relative">
+            <img
+              src="/logo.jpg"
+              alt="Mokiekie Estate Logo"
+              className="w-12 h-12 object-cover rounded-full ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all duration-300"
+            />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500/10 to-purple-500/10 group-hover:from-blue-500/20 group-hover:to-purple-500/20 transition-all duration-300"></div>
+          </div>
+          <div className="hidden sm:block">
+            <h1 className="font-bold text-xl text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+              Mokiekie
+            </h1>
+            <p className="text-sm text-gray-500 -mt-1">Globals Ltd</p>
+          </div>
+        </Link>
+
+        {/* Search */}
+        <div className="flex-1 max-w-md mx-4 sm:mx-8">
+          <form onSubmit={handleSubmit} className="relative group">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search properties..."
+                className="w-full bg-gray-50 border border-gray-200 rounded-full py-3 pl-4 pr-12 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:bg-gray-100"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                <FaSearch className="w-4 h-4" />
+              </button>
             </div>
-        </header>
-    )
+          </form>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex items-center space-x-1 sm:space-x-2">
+          <Link
+            to="/"
+            className="hidden sm:block px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 font-medium"
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            className="hidden sm:block px-4 py-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 font-medium"
+          >
+            Contact
+          </Link>
+
+          <Link
+            to="/profile"
+            className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-300 group"
+          >
+            {currentUser ? (
+              <div className="flex items-center space-x-2">
+                <img
+                  src={currentUser.avatar || "/placeholder.svg"}
+                  alt="Profile"
+                  className="w-8 h-8 rounded-full object-cover ring-2 ring-gray-200 group-hover:ring-blue-300 transition-all duration-300"
+                />
+                <span className="hidden md:block text-sm font-medium text-gray-700 group-hover:text-blue-600">
+                  Profile
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-300 hover:scale-105">
+                <FaUser className="w-4 h-4" />
+                <span className="font-medium">Sign In</span>
+              </div>
+            )}
+          </Link>
+        </nav>
+      </div>
+    </header>
+  )
 }
 
 export default Header

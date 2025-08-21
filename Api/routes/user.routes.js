@@ -90,3 +90,47 @@ router.get('/:id', verifyToken, getUser)
 // router.post('/update/:id', verifyToken, updateListing)
 export default router;
 
+
+// import express from 'express';
+// import {
+//   test,
+//   deleteUser,
+//   updateUser,
+//   getUserListings,
+//   getUser,
+//   getAllUsers,
+//   updateUserRole,
+//   toggleUserStatus,
+//   getUserPermissions
+// } from '../controllers/user.controller.js';
+// import { verifyToken } from '../utils/verifyUser.js';
+// import { requireRole, requireRoleLevel, requirePermission } from '../middleware/auth.js';
+
+// const router = express.Router();
+
+// // Public test route
+// router.get('/test', test);
+
+// // Protected routes - require authentication
+// router.use(verifyToken); // All routes below require authentication
+
+// // User profile routes
+// router.get('/profile/:id', getUser); // Get user profile (own or others based on role)
+// router.post('/update/:id', updateUser); // Update user profile
+// router.delete('/delete/:id', deleteUser); // Delete user account
+
+// // User listings - separate routes instead of optional parameter
+// router.get('/listings', getUserListings); // Get current user's listings
+// router.get('/listings/:id', getUserListings); // Get specific user's listings
+
+// // User permissions
+// router.get('/permissions/:id', getUserPermissions); // Get user permissions
+
+// // Admin/Moderator only routes
+// router.get('/all', requireRoleLevel('moderator'), getAllUsers); // Get all users (paginated)
+// router.post('/toggle-status/:id', requireRoleLevel('moderator'), toggleUserStatus); // Activate/deactivate user
+
+// // Admin only routes
+// router.post('/update-role/:id', requireRole('admin'), updateUserRole); // Change user role
+
+// export default router;
