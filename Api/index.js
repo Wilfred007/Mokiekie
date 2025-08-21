@@ -8,8 +8,19 @@ import uploadRouter from './routes/upload.route.js'
 import listingRouter from './routes/listing.route.js'
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import cors from 'cors';
 
 dotenv.config()
+
+app.use(cors({
+    origin: [
+      'http://localhost:5173',  // Development frontend
+      'https://your-frontend-domain.com'  // Production frontend (when you deploy)
+    ],
+    credentials: true,  // Important for cookies/sessions
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
 
 console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
 console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME);
