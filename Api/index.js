@@ -17,11 +17,6 @@ console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY ? 'EXISTS' : '
 console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? 'EXISTS' : 'MISSING');
 console.log('MONGO:', process.env.MONGO ? 'EXISTS' : 'MISSING');
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'EXISTS' : 'MISSING');
-// Add email environment variables check
-console.log('EMAIL_USER:', process.env.EMAIL_USER ? `EXISTS (${process.env.EMAIL_USER})` : 'MISSING');
-console.log('EMAIL_APP_PASSWORD:', process.env.EMAIL_APP_PASSWORD ? 'EXISTS' : 'MISSING');
-console.log('FRONTEND_URL:', process.env.FRONTEND_URL || 'MISSING (using default: http://localhost:5173)');
-console.log('=====================================');
 
 mongoose.connect(process.env.MONGO).then(() => {
     console.log("Connected to MongoDB");
