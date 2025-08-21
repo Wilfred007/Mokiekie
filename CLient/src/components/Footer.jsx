@@ -42,7 +42,7 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Company</h3>
             <nav className="space-y-3">
-              {['About Us', 'Careers', 'Press', 'Contact'].map((item) => (
+              {['About Us', 'Contact'].map((item) => (
                 <a 
                   key={item}
                   href={`#${item.toLowerCase().replace(' ', '-')}`}
@@ -56,19 +56,26 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <Link to={''} className="text-white font-semibold mb-4">Services</Link>
-            <nav className="space-y-3">
-              {['Rent', 'Sale', 'Lands', 'Construction'].map((item) => (
-                <a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`}
-                  className="block text-gray-400 hover:text-white transition-colors duration-200"
-                >
-                  {item}
-                </a>
-              ))}
-            </nav>
-          </div>
+  <Link to="/services" className="text-white font-semibold mb-4">
+    Services
+  </Link>
+  <nav className="space-y-3">
+    {[
+      { name: "Rent", path: "/" },
+      { name: "Sale", path: "/" },
+      { name: "Lands", path: "/" },
+      { name: "Construction", path: "/about" },
+    ].map((item) => (
+      <Link 
+        key={item.name}
+        to={item.path}
+        className="block text-gray-400 hover:text-white transition-colors duration-200"
+      >
+        {item.name}
+      </Link>
+    ))}
+  </nav>
+</div>
         </div>
 
         {/* Social Media */}
