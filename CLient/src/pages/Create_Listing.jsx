@@ -543,6 +543,7 @@
 import React, { useState } from "react";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Create_Listing = () => {
     const { currentUser } = useSelector(state => state.user);
@@ -715,117 +716,169 @@ const Create_Listing = () => {
         }
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         if (formData.imageUrls.length < 1) {
+    //             setError('You must upload at least one image');
+    //             return;
+    //         }
+    //         if (formData.offer && (+formData.regularPrice < +formData.discountedPrice)) {
+    //             setError('Discount price must be lower than regular price');
+    //             return;
+    //         }
+            
+    //         setLoading(true);
+    //         setError(false);
+    //         setSuccess(false);
+            
+    //         // Prepare form data - ensure discountedPrice is always provided
+    //         const submitData = {
+    //             ...formData,
+    //             userRef: currentUser._id,
+    //             // If offer is false, set discountedPrice to regularPrice
+    //             discountedPrice: formData.offer ? formData.discountedPrice : formData.regularPrice
+    //         };
+
+    //         console.log('Submitting data:', submitData);
+    //         console.log('API URL:', `${API_BASE_URL}/Api/listing/create`);
+    //         console.log('Current user:', currentUser);
+            
+    //         // Get authentication token
+    //         const token = currentUser?.token || localStorage.getItem('token') || sessionStorage.getItem('token');
+    //         console.log('Token available:', !!token);
+            
+    //         // Updated to use absolute URL with timeout
+    //         const controller = new AbortController();
+    //         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+            
+    //         const headers = {
+    //             'Content-Type': 'application/json',
+    //         };
+            
+    //         // Add authorization token if available
+    //         if (token) {
+    //             headers['Authorization'] = `Bearer ${token}`;
+    //         }
+            
+    //         console.log('Request headers:', headers);
+            
+    //         const res = await axios.fetch(`${API_BASE_URL}/Api/listing/create`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Authorization": `Bearer ${token}`   // 
+    //               },             
+    //                  credentials: 'include', // Also try cookies
+    //             body: JSON.stringify(submitData),
+    //             signal: controller.signal
+    //         });
+            
+    //         clearTimeout(timeoutId);
+            
+    //         console.log('Response status:', res.status);
+    //         console.log('Response headers:', res.headers);
+            
+    //         // Check if response is ok
+    //         if (!res.ok) {
+    //             const errorText = await res.text();
+    //             console.error('Error response:', errorText);
+    //             throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+    //         }
+            
+    //         const data = await res.json();
+    //         console.log('Response data:', data);
+            
+    //         setLoading(false);
+            
+    //         if (data.success === false) {
+    //             setError(data.message || 'Failed to create listing');
+    //             setSuccess(false);
+    //         } else {
+    //             // Success! Show notification and navigate
+    //             setSuccess(true);
+    //             setError(false);
+    //             console.log('Listing created successfully:', data);
+                
+    //             // Reset form after a short delay
+    //             setTimeout(() => {
+    //                 // Option 1: Navigate to the new listing
+    //                 navigate(`/listing/${data._id}`);
+                    
+    //                 // Option 2: Navigate to profile or listings page
+    //                 // navigate('/profile');
+                    
+    //                 // Option 3: Reset form and stay on page
+    //                 // resetForm();
+    //             }, 2000);
+    //         }
+    //     } catch (error) {
+    //         console.error('Submit error:', error);
+    //         setLoading(false);
+    //         setSuccess(false);
+            
+    //         if (error.name === 'AbortError') {
+    //             setError('Request timeout - please check your internet connection and try again');
+    //         } else if (error.message.includes('Failed to fetch')) {
+    //             setError('Network error - please check if the server is running');
+    //         } else {
+    //             setError(error.message || 'An unexpected error occurred');
+    //         }
+    //     }
+    // };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (formData.imageUrls.length < 1) {
-                setError('You must upload at least one image');
-                return;
+          if (formData.imageUrls.length < 1) {
+            setError('You must upload at least one image');
+            return;
+          }
+          if (formData.offer && (+formData.regularPrice < +formData.discountedPrice)) {
+            setError('Discount price must be lower than regular price');
+            return;
+          }
+      
+          setLoading(true);
+          setError(false);
+          setSuccess(false);
+      
+          const submitData = {
+            ...formData,
+            userRef: currentUser._id,
+            discountedPrice: formData.offer ? formData.discountedPrice : formData.regularPrice,
+          };
+      
+          console.log("Submitting data:", submitData);
+      
+          // ✅ Use axios correctly
+          const res = await axios.post(
+            `${API_BASE_URL}/Api/listing/create`,
+            submitData,
+            {
+              withCredentials: true, // ✅ send HttpOnly cookie automatically
+              headers: { "Content-Type": "application/json" }
             }
-            if (formData.offer && (+formData.regularPrice < +formData.discountedPrice)) {
-                setError('Discount price must be lower than regular price');
-                return;
-            }
-            
-            setLoading(true);
-            setError(false);
-            setSuccess(false);
-            
-            // Prepare form data - ensure discountedPrice is always provided
-            const submitData = {
-                ...formData,
-                userRef: currentUser._id,
-                // If offer is false, set discountedPrice to regularPrice
-                discountedPrice: formData.offer ? formData.discountedPrice : formData.regularPrice
-            };
-
-            console.log('Submitting data:', submitData);
-            console.log('API URL:', `${API_BASE_URL}/Api/listing/create`);
-            console.log('Current user:', currentUser);
-            
-            // Get authentication token
-            const token = currentUser?.token || localStorage.getItem('token') || sessionStorage.getItem('token');
-            console.log('Token available:', !!token);
-            
-            // Updated to use absolute URL with timeout
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-            
-            const headers = {
-                'Content-Type': 'application/json',
-            };
-            
-            // Add authorization token if available
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
-            }
-            
-            console.log('Request headers:', headers);
-            
-            const res = await fetch(`${API_BASE_URL}/Api/listing/create`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`   // 
-                  },             
-                     credentials: 'include', // Also try cookies
-                body: JSON.stringify(submitData),
-                signal: controller.signal
-            });
-            
-            clearTimeout(timeoutId);
-            
-            console.log('Response status:', res.status);
-            console.log('Response headers:', res.headers);
-            
-            // Check if response is ok
-            if (!res.ok) {
-                const errorText = await res.text();
-                console.error('Error response:', errorText);
-                throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-            }
-            
-            const data = await res.json();
-            console.log('Response data:', data);
-            
-            setLoading(false);
-            
-            if (data.success === false) {
-                setError(data.message || 'Failed to create listing');
-                setSuccess(false);
-            } else {
-                // Success! Show notification and navigate
-                setSuccess(true);
-                setError(false);
-                console.log('Listing created successfully:', data);
-                
-                // Reset form after a short delay
-                setTimeout(() => {
-                    // Option 1: Navigate to the new listing
-                    navigate(`/listing/${data._id}`);
-                    
-                    // Option 2: Navigate to profile or listings page
-                    // navigate('/profile');
-                    
-                    // Option 3: Reset form and stay on page
-                    // resetForm();
-                }, 2000);
-            }
+          );
+      
+          console.log("Response:", res.data);
+      
+          setLoading(false);
+          setSuccess(true);
+      
+          setTimeout(() => {
+            navigate(`/listing/${res.data._id}`);
+          }, 2000);
+      
         } catch (error) {
-            console.error('Submit error:', error);
-            setLoading(false);
-            setSuccess(false);
-            
-            if (error.name === 'AbortError') {
-                setError('Request timeout - please check your internet connection and try again');
-            } else if (error.message.includes('Failed to fetch')) {
-                setError('Network error - please check if the server is running');
-            } else {
-                setError(error.message || 'An unexpected error occurred');
-            }
+          console.error("Submit error:", error);
+          setLoading(false);
+          setSuccess(false);
+          setError(error.response?.data?.error || "An unexpected error occurred");
         }
-    };
-
+      };
+      
     const resetForm = () => {
         setFormData({
             imageUrls: [],

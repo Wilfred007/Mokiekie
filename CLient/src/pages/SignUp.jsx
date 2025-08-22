@@ -1,75 +1,185 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+// import React, { useState } from 'react'
+// import { Link, useNavigate } from 'react-router-dom'
+// import OAuth from '../components/OAuth';
+
+// const SignUp = () => {
+//   const [formData, setFormData] = useState({})
+//   const [error, setError] = useState(null);
+//   const [loading, setLoading] = useState(false)
+//   const navigate = useNavigate()
+
+
+
+
+//   const handleChange=(e) => {
+//     setFormData({
+//       ...formData,
+//       [e.target.id]: e.target.value,
+//     });
+
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       setLoading(true);
+//       setError(null)
+//       const res = await fetch('/Api/auth/signup', 
+//         {
+//           method: 'POST',
+//           headers: {
+//             'Content-type': 'application/json'
+//           },
+//           body: JSON.stringify(formData),
+//         }
+//       );
+//       const data = await res.json();
+//       console.log(data)
+//       if(!res.ok){
+//         setError(data.message || 'Something went wrong');
+//         setLoading(false);
+//         // setError(data.message);
+//         return;
+//       }
+//       setLoading(false)
+//       setError(null)
+//       navigate('/sign-in')
+      
+//     } catch (error) {
+//       setLoading(false)
+//       setError(error.message)
+//     }
+   
+
+//   };
+//   // console.log(formData)
+//   return (
+//     <div>
+//       <h1 className='text-3xl text-center font-bold text-slate-600 my-7'>Sign Up</h1>
+//       <form className='flex flex-col gap-4 p-5 max-w-lg mx-auto' onSubmit={handleSubmit}>
+//         <input type='text' placeholder='Username' className='border-none bg-white p-3 rounded-lg focus:outline-none' id='username'onChange={handleChange} />
+//         <input type='email' placeholder='Email' className='border-none bg-white p-3 rounded-lg focus:outline-none' id='email'onChange={handleChange} />
+//         <input type='password' placeholder='Password' className='border-none bg-white focus:outline-none p-3 rounded-lg' id='password'onChange={handleChange} />
+//         <button disabled={loading}  className='bg-blue-600 text-white p-4 rounded-xl cursor-pointer hover:bg-blue-800 disabled:opacity-85'>{loading ? 'Loading...': 'Sign Up'}</button>
+//         <OAuth/>
+//       </form>
+//       <div className='flex gap-2 justify-center'>
+//         <h1>Have an account?</h1>
+//         <Link to={"/signin"} className='text-blue-700'>Sign in</Link>
+//       </div>
+//       {error && <p className='text-red-900 flex justify-center'>{error}</p>}
+//     </div>
+//   )
+// }
+
+// export default SignUp
+
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import OAuth from '../components/OAuth';
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Base API URL (switches depending on environment)
+  const API_BASE = "https://mokiekie.onrender.com"
 
-
-
-  const handleChange=(e) => {
-    setFormData({
-      ...formData,
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
       [e.target.id]: e.target.value,
-    });
-
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      setError(null)
-      const res = await fetch('/Api/auth/signup', 
-        {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json'
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const res = await fetch(`${API_BASE}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
       const data = await res.json();
-      console.log(data)
-      if(!res.ok){
-        setError(data.message || 'Something went wrong');
-        setLoading(false);
-        // setError(data.message);
+      console.log('Signup response:', data);
+
+      if (!res.ok) {
+        setError(data.message || 'Signup failed');
         return;
       }
-      setLoading(false)
-      setError(null)
-      navigate('/sign-in')
-      
-    } catch (error) {
-      setLoading(false)
-      setError(error.message)
-    }
-   
 
+      // Success → Redirect to sign-in
+      navigate('/sign-in');
+    } catch (err) {
+      setError(err.message || 'Network error');
+    } finally {
+      setLoading(false);
+    }
   };
-  // console.log(formData)
+
   return (
     <div>
-      <h1 className='text-3xl text-center font-bold text-slate-600 my-7'>Sign Up</h1>
-      <form className='flex flex-col gap-4 p-5 max-w-lg mx-auto' onSubmit={handleSubmit}>
-        <input type='text' placeholder='Username' className='border-none bg-white p-3 rounded-lg focus:outline-none' id='username'onChange={handleChange} />
-        <input type='email' placeholder='Email' className='border-none bg-white p-3 rounded-lg focus:outline-none' id='email'onChange={handleChange} />
-        <input type='password' placeholder='Password' className='border-none bg-white focus:outline-none p-3 rounded-lg' id='password'onChange={handleChange} />
-        <button disabled={loading}  className='bg-blue-600 text-white p-4 rounded-xl cursor-pointer hover:bg-blue-800 disabled:opacity-85'>{loading ? 'Loading...': 'Sign Up'}</button>
-        <OAuth/>
-      </form>
-      <div className='flex gap-2 justify-center'>
-        <h1>Have an account?</h1>
-        <Link to={"/signin"} className='text-blue-700'>Sign in</Link>
-      </div>
-      {error && <p className='text-red-900 flex justify-center'>{error}</p>}
-    </div>
-  )
-}
+      <h1 className="text-3xl text-center font-bold text-slate-600 my-7">Sign Up</h1>
 
-export default SignUp
+      <form
+        className="flex flex-col gap-4 p-5 max-w-lg mx-auto"
+        onSubmit={handleSubmit}
+      >
+        <input
+          type="text"
+          placeholder="Username"
+          className="border-none bg-white p-3 rounded-lg focus:outline-none"
+          id="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          className="border-none bg-white p-3 rounded-lg focus:outline-none"
+          id="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="border-none bg-white p-3 rounded-lg focus:outline-none"
+          id="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 text-white p-4 rounded-xl cursor-pointer hover:bg-blue-800 disabled:opacity-75"
+        >
+          {loading ? 'Signing Up...' : 'Sign Up'}
+        </button>
+
+        <OAuth />
+      </form>
+
+      <div className="flex gap-2 justify-center mt-4">
+        <p>Have an account?</p>
+        <Link to="/sign-in" className="text-blue-700">
+          Sign in
+        </Link>
+      </div>
+
+      {error && <p className="text-red-900 text-center mt-3">{error}</p>}
+    </div>
+  );
+};
+
+export default SignUp;
