@@ -660,7 +660,7 @@ const Create_Listing = () => {
             };
 
             // Updated to use absolute URL with authentication
-            xhr.open('POST', `${API_BASE_URL}/Api/upload`);
+            xhr.open('POST', `https://mokiekie.onrender.com/Api/upload/upload`);
             
             // Add authentication token if available
             const token = currentUser?.token || localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -850,15 +850,19 @@ const Create_Listing = () => {
       
           console.log("Submitting data:", submitData);
       
-          // ✅ Use axios correctly
-          const res = await axios.post(
-            `${API_BASE_URL}/Api/listing/create`,
-            submitData,
-            {
-              withCredentials: true, // ✅ send HttpOnly cookie automatically
-              headers: { "Content-Type": "application/json" }
-            }
-          );
+          
+          const res = await fetch(`https://mokiekie.onrender.com/Api/listing/create`, {
+            method: "POST",
+            credentials: "include", 
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(submitData)
+          });
+          
+          const data = await res.json();
+          console.log(data);
+          
       
           console.log("Response:", res.data);
       

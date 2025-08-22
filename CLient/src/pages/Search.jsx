@@ -327,6 +327,9 @@ const Search = () => {
       order,
     });
 
+
+    const baseUrl = 'https://mokiekie.onrender.com'
+
     const fetchListings = async () => {
       try {
         setLoading(true);
@@ -336,7 +339,7 @@ const Search = () => {
         urlParams.set("startIndex", 0);
         urlParams.set("limit", 9);
 
-        const res = await fetch(`/Api/listing/get?${urlParams.toString()}`);
+        const res = await fetch(`${baseUrl}/Api/listing/get?${urlParams.toString()}`);
         if (!res.ok) throw new Error("Failed to fetch listings");
 
         const data = await res.json();
@@ -363,7 +366,7 @@ const Search = () => {
       urlParams.set("startIndex", listings.length); // Continue from current
       urlParams.set("limit", 9);
 
-      const res = await fetch(`/Api/listing/get?${urlParams.toString()}`);
+      const res = await fetch(`${baseUrl}/Api/listing/get?${urlParams.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch more listings");
 
       const data = await res.json();

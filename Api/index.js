@@ -119,11 +119,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 // --- Routes ---
-const __dirname = path.resolve();
-app.use('/Api/user', userRouter);
-app.use('/Api/auth', authRouter);
-app.use('/Api/upload', uploadRouter);
-app.use('/Api/listing', listingRouter);
+// const __dirname = path.resolve();
+    app.use('/Api/user', userRouter);
+    app.use('/Api/auth', authRouter);
+    app.use('/Api/upload', uploadRouter);
+    app.use('/Api/listing', listingRouter);
 
 // --- Error Handling ---
 app.use((err, req, res, next) => {

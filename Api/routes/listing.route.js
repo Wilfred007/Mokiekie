@@ -99,6 +99,15 @@ router.post('/update/:id', verifyToken, async (req, res, next) => {
   }
 });
 
+// router.get('/get', async (req, res, next) => {
+//   try {
+//     const listings = await Listing.find(); // Fetch all documents from Listing collection
+//     res.status(200).json(listings);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 // Delete listing
 router.delete('/delete/:id', verifyToken, async (req, res) => {
   try {

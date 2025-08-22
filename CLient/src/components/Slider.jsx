@@ -21,7 +21,7 @@ const Slider = () => {
         setError(null)
 
 
-        const baseUrl = 'https://mokiekie.onrender.com/Api/'
+        const baseUrl = 'https://mokiekie.onrender.com/Api/listing/get'
         
         // Use proxy in development, direct URL in production
         // const baseUrl = import.meta.env.MODE === 'development' 
@@ -64,7 +64,7 @@ const Slider = () => {
         }
 
         // Fetch sale
-        const saleRes = await fetch(`https://mokiekie.onrender.com/Api/?type=sale&limit=4`, {
+        const saleRes = await fetch(`${baseUrl}?type=rent&limit=4`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
