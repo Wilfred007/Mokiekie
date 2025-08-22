@@ -296,10 +296,9 @@ import OAuth from '../components/OAuth'
 import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react'
 
 // API base URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.MODE === 'production' 
-    ? 'https://mokiekie.onrender.com' 
-    : 'http://localhost:3000')
+// const API_BASE_URL = import.meta.env.VITE_API_URL || 
+//   (import.meta.env.MODE === 'production' 
+//     ? 'https://mokiekie.onrender.com' 
 
 const SignIn = () => {
   const [formData, setFormData] = useState({})
@@ -322,7 +321,7 @@ const SignIn = () => {
       dispatch(signInStart());
       
       // TEMPORARY: Force direct URL for testing
-      const apiUrl = `${API_BASE_URL}/Api/auth/signin`; // Always use direct URL for testing
+      const apiUrl = `https://mokiekie.onrender.com/Api/auth/signin`; // Always use direct URL for testing
       
       console.log('🌐 Making API call to:', apiUrl);
       console.log('🏗️ Environment mode:', import.meta.env.MODE);

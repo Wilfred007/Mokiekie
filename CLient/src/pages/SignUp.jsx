@@ -85,7 +85,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   // Base API URL (switches depending on environment)
-  const API_BASE = "https://mokiekie.onrender.com"
+  // const API_BASE = "https://mokiekie.onrender.com"
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -100,10 +100,11 @@ const SignUp = () => {
     setError(null);
 
     try {
-      const res = await fetch(`${API_BASE}/auth/signup`, {
+      const res = await fetch('https://mokiekie.onrender.com/Api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        credentials: 'include', // Important for cookies/sessions
       });
 
       const data = await res.json();

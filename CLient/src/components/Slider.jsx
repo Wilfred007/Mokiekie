@@ -19,14 +19,17 @@ const Slider = () => {
       try {
         setLoading(true)
         setError(null)
+
+
+        const baseUrl = 'https://mokiekie.onrender.com/Api/'
         
         // Use proxy in development, direct URL in production
-        const baseUrl = import.meta.env.MODE === 'development' 
-          ? '/Api/listing/get'  // Use Vite proxy in development
-          : `${API_BASE_URL}/Api/listing/get`; // Direct URL in production
+        // const baseUrl = import.meta.env.MODE === 'development' 
+        //   ? '/Api/listing/get'  // Use Vite proxy in development
+        //   : `${API_BASE_URL}/Api/listing/get`; // Direct URL in production
         
-        console.log('🔄 Fetching listings from:', baseUrl);
-        console.log('🏗️ Environment mode:', import.meta.env.MODE);
+        // console.log('🔄 Fetching listings from:', baseUrl);
+        // console.log('🏗️ Environment mode:', import.meta.env.MODE);
 
         // Fetch offers
         const offerRes = await fetch(`${baseUrl}?offer=true&limit=4`, {
@@ -61,7 +64,7 @@ const Slider = () => {
         }
 
         // Fetch sale
-        const saleRes = await fetch(`${baseUrl}?type=sale&limit=4`, {
+        const saleRes = await fetch(`https://mokiekie.onrender.com/Api/?type=sale&limit=4`, {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',

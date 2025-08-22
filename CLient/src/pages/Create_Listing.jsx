@@ -585,10 +585,8 @@ const Create_Listing = () => {
     }
 
     // API base URL configuration
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 
-        (import.meta.env.MODE === 'production' 
-            ? 'https://mokiekie.onrender.com' 
-            : 'http://localhost:3000')
+    const API_BASE_URL =  'https://mokiekie.onrender.com' 
+            
 
     const handleImageSubmit = (e) => {
         if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
