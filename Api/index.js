@@ -84,7 +84,9 @@ const app = express();
 // --- CORS Setup ---
 const allowedOrigins = [
   'http://localhost:5174',               // Development frontend
-//   'https://your-frontend-domain.com'     // Production frontend (update when hosted)
+//   'https://your-frontend-domain.com'
+     // Production frontend (update when hosted)
+     'https://mokiekie-wilfred007s-projects.vercel.app/'
 ];
 
 app.use(cors({
