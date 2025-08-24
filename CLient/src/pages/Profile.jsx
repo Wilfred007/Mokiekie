@@ -42,7 +42,7 @@ const Profile = () => {
   const handleLogOut = async() => {
     try {
       dispatch(signOutUserStart())
-      const res = await fetch('/Api/auth/signout');
+      const res = await fetch(`${baseUrl}/Api/auth/signout`);
       const data = await res.json();
       if(data.success == false) {
         dispatch(deleteUserFailure(data.message))
