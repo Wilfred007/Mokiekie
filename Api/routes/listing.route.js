@@ -110,8 +110,10 @@ router.put('/update/:id', verifyToken, async (req, res, next) => {
 
 // Delete listing
 router.delete('/delete/:id', verifyToken, async (req, res) => {
+  console.log("Decoded user from token", req.user);
   try {
     const listing = await Listing.findById(req.params.id);
+    console.log("Listing UserRef", Listing?.userRef)
     if (!listing) return res.status(404).json({ error: 'Listing not found!' });
     if (req.user.id !== listing.userRef) return res.status(401).json({ error: 'You can only delete your own listings!' });
 
